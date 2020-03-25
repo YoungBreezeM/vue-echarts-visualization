@@ -5,17 +5,22 @@ import store from "../../../store/store.js";
 import types from "../../../store/types";
 
 let GraphIndex = () => import("../view/GraphIndex.vue");
+let TempTable =()=>import("../components/tempTable/TempTable");
+let ClassInfo =()=>import("../components/classInfo/ClassInfo");
+let DormitoryInfo =()=>import("../components/dormitoryInfo/DormitoryInfo");
+let UninputTable =()=>import("../components/unInputTable/UninputTable") ;
+let TeacherInfo =()=>import("../components/teacherInfo/TeacherInfo");
 // let OuterInfo = () => import ('../../components/echarts/info/OuterInfo.vue');
 // let UninputStuTable = () => import ('../../components/echarts/table/UninputStuTable');
 // let OutStudentTable = () => import ('../../components/echarts/table/OutStudentTable.vue');
 // let OutTeacherTable = () => import ('../../components/echarts/table/OutTeacherTable.vue');
 // let TeacherInfo = () => import ('../../components/echarts/info/TeacherInfo.vue');
-// let TempStudentTable = () => import ('../../components/echarts/table/TempStudentTable.vue');
+// let TempStudentTable = () => import ('../../components/echarts/table/TempTable.vue');
 // let UninputStudentPie = () => import ('../../components/echarts/pie/UninputStudentPie.vue');
 // let DormitoryInfo = () => import ('../../components/echarts/info/DormitoryInfo.vue');
 // let StudentTempLine = () => import ('../../components/echarts/line/StudentTempLine.vue');
 // let TempTeacherTable = () => import ('../../components/echarts/table/TempTeacherTable.vue');
-// let ClassStuInfo = () => import ('../../components/echarts/info/ClassStuInfo.vue');
+// let ClassStuInfo = () => import ('../../components/echarts/info/ClassInfo.vue');
 // let Message = ()=> import("../view/Portal") ;
 // let FullScreen =()=> import("./view/FullScreen/FullScreen");
 
@@ -26,6 +31,31 @@ let routes = [
         path: "/graph",
         name: 'graph',
         component: GraphIndex
+    },
+    {
+        path:"/graph/tempTable/:date",
+        name:"tempTable",
+        component:TempTable
+    },
+    {
+        path:"/graph/classInfo/:className",
+        name:"classInfo",
+        component:ClassInfo
+    },
+    {
+        path:"/graph/dormitoryInfo/:dormitoryNum",
+        name:"dormitoryInfo",
+        component:DormitoryInfo
+    },
+    {
+        path:"/graph/unInputTable",
+        name:"unInputTable",
+        component:UninputTable
+    },
+    {
+        path:'/graph/teacherInfo',
+        name:"teacherInfo",
+        component:TeacherInfo
     }
     // {
     //     path: "/whole/message",

@@ -91,7 +91,10 @@
                 };
                 console.log(mapId);
                 if(infoJson[params.name]===undefined){
-                    alert("数据尚未录入,请录入数据")
+                    this.$message.warning({
+                        showClose: true,
+                        message: "数据未录入"
+                    });
                     return;
                 }
                 this.draw({

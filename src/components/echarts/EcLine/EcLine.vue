@@ -34,12 +34,15 @@
         },
         mounted() {
             if (this.renderData) {
-                this.draw(this.renderData);
+                this.draw(this.renderData)
+                    .then(myChart=>{
+                        this.targetClick(myChart);
+                    })
             }
 
         },
         methods: {
-            draw(renderData) {
+            async draw(renderData) {
                 //初始化图例
                 const myChart = echarts.init(this.$refs.myLine);
                 let newRenderDate = core.synthetic(renderData, optionLine);
@@ -48,6 +51,7 @@
 
                 //监听可以选择项
                 this.limitChange(myChart);
+                return myChart;
 
 
             },
@@ -70,6 +74,11 @@
                         this.draw(this.renderData)
                     }
                 });
+            },
+            targetClick(myChart){
+                myChart.on("click",params=>{
+                    this.$emit("lineClick",params);
+                })
             }
 
         },

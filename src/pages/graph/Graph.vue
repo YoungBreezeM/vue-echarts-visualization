@@ -12,7 +12,9 @@
         </div>
         <!--主体-->
         <div class="clearfix">
-            <router-view></router-view>
+            <transition name="toggle">
+                <router-view></router-view>
+            </transition>
         </div>
     </div>
 </template>

@@ -53,7 +53,9 @@
                 </div>
                 <!-- 体温正/异常人数折线模块 -->
                 <div class="border-container show-radio">
-                    <EcLine :render-data="renderCenter.isNormalLine"></EcLine>
+                    <EcLine :render-data="renderCenter.isNormalLine"
+                            v-on:lineClick = "lineClick"
+                    ></EcLine>
                     <span class="top-left border-span"></span>
                     <span class="top-right border-span"></span>
                     <span class="bottom-left border-span"></span>
@@ -97,7 +99,6 @@
     import isOutLine from "../../../json/LineJson/isOutLine";
     import isNormalLine from "../../../json/LineJson/isNormalLine";
     import dataByChina from "../../../json/map/dataByChina";
-    import college from "../../../json/PieJson/college";
     import populationNum_PDS from "../../../json/LineJson/populationNum_PDS";
     import populationNum_China from "../../../json/LineJson/populationNum_China";
     import populationNum_HeNan from "../../../json/LineJson/populationNum_HeNan";
@@ -162,13 +163,25 @@
                 if(grading[msg.data.grade+1]){
                     this.renderCenter.isInput = grading[msg.data.grade+1]
                 }else {
-                    this.$message.warning({
-                        showClose: true,
-                        message: "数据已近到底"
+                    this.$router.push({
+                        path:"/graph/unInputTable/"
                     })
                 }
 
             },
+            lineClick(parmas){
+                console.log(parmas)
+                //获取折线图点击参数
+                let path = {
+                    "正常":"/graph/tempTable/"+parmas.name,
+                    "不正常":"/graph/tempTable/"+parmas.name
+                };
+                if(path[parmas.seriesName]){
+                    this.$router.push({path:path[parmas.seriesName]})
+                }else {
+                    throw new Error("please config in lineClick() in path add Map")
+                }
+            }
 
         }
     };

@@ -3,7 +3,7 @@
     <div>
       <i class="el-icon-arrow-right"></i
       ><span class="chart-title"
-        >{{ department }}{{ grade }}未录入的学生信息表：</span
+        >未录入的学生信息表：</span
       >
     </div>
     <el-table
@@ -31,6 +31,7 @@
 </template>
 
 <script>
+  import "./un-input-table.scss"
 export default {
   name: "uninput-student-table",
   data() {
@@ -86,15 +87,15 @@ export default {
     getStudentInfo(row, column) {
       if (column.property == "dormitoryNum") {
         this.$router.push({
-          path: "/whole/dormitoryInfo/" + row[column.property]
+          path: "/graph/dormitoryInfo/" + row[column.property]
         });
       } else if (column.property == "instructor") {
         this.$router.push({
-          path: "/whole/teacherInfo/" + row[column.property] + "/false"
+          path: "/graph/teacherInfo/"
         });
       } else if (column.property == "classNo") {
         this.$router.push({
-          path: "/whole/classStuInfo/" + row[column.property]
+          path: "/graph/classInfo/" + row[column.property]
         });
       }
     },
@@ -107,31 +108,3 @@ export default {
   }
 };
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style lang="scss">
-.uninput-student-table::-webkit-scrollbar {
-  width: 4px;
-}
-.uninput-student-table::-webkit-scrollbar-thumb {
-  border-radius: 10px;
-  -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
-  border-radius: 0;
-  background-color: rgba(0, 0, 0, 0.1);
-}
-.uninput-student-table::-webkit-scrollbar-track {
-  -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
-  border-radius: 0;
-  background-color: rgba(0, 0, 0, 0.1);
-}
-.uninput-student-table {
-  width: 100%;
-  height: 100%;
-  .chart-title {
-    font-size: 20px;
-  }
-  .student-table {
-    margin-top: 18px;
-  }
-}
-</style>

@@ -35,9 +35,6 @@ export default {
   name: "today-temp-table",
   data() {
     return {
-      role: null,
-      time: null,
-      myChart: {},
       tempNum: [
         {
           time: "8:00",
@@ -75,25 +72,12 @@ export default {
     this.role = this.allIndexs[this.checkedVal[0]].label;
   },
   methods: {
-    getDate() {
-      let date = new Date();
-      let month = date.getMonth() + 1;
-      let day = date.getDate();
-      let time = month + "-" + day;
-      this.time = time;
-    },
-    getInfo() {
-      this.getDate();
-      let that = this;
-      if (this.role == "学生") {
-        this.$router.push({
-          path: "/whole/tempStudentTable/" + that.time + "/" + this.role
-        });
-      } else if (this.role == "教师") {
-        this.$router.push({
-          path: "/whole/tempTeacherTable/" + that.time + "/" + this.role
-        });
-      }
+    getInfo(row, column) {
+      console.log(row)
+      this.$router.push({
+        path: "/graph/tempTable/"+(new Date().getMonth()+1)+"-"+new Date().getDate()+"-"+row.time
+      });
+      console.log(new Date().getMonth())
     },
     // eslint-disable-next-line no-unused-vars
     addClass({columnIndex}){

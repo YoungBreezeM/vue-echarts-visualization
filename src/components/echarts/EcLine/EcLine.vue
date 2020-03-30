@@ -36,7 +36,10 @@
             if (this.renderData) {
                 this.draw(this.renderData)
                     .then(myChart=>{
+                        //监听事件是否被点击
                         this.targetClick(myChart);
+                        //监听可以选择项
+                        this.limitChange(myChart);
                     })
             }
 
@@ -48,31 +51,26 @@
                 let newRenderDate = core.synthetic(renderData, optionLine);
                 // console.log(newRenderDate)
                 myChart.setOption(newRenderDate, true);
-
-                //监听可以选择项
-                this.limitChange(myChart);
                 return myChart;
-
 
             },
             limitChange(myChart) {
                 myChart.on("legendselectchanged", (params) => {
                     let count = 0;
-                    for (let key in params.selected) {
-                        if (params.selected[key]) {
-                           count++;
+                    for(let i in params.selected){
+                        if(params.selected[i]){
+                            count += 1;
                         }
                     }
-
                     if(count>3){
-                        //如果待选项超过3个,重新渲染
-                        count = 0;
+                        // //如果待选项超过3个,重新渲染
+                        this.draw(this.renderData);
                         this.$message.warning({
                             showClose: true,
                             message: "糟糕，数据太多了，眼花缭乱的。请至多对三个地市进行比较"
                         });
-                        this.draw(this.renderData)
                     }
+
                 });
             },
             targetClick(myChart){

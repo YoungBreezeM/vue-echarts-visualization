@@ -109,7 +109,6 @@
     let TodayTempTable = () => import("../components/todayTempTable/TodayTempTable");
     let Weather = () => import("../../../components/echarts/weather/Weather.vue");
     let EcPie =()=> import("../../../components/echarts/EcPie/EcPie");
-    　
     export default {
         name: "show",
         data() {

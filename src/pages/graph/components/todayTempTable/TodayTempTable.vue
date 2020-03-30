@@ -72,7 +72,7 @@ export default {
     this.role = this.allIndexs[this.checkedVal[0]].label;
   },
   methods: {
-    getInfo(row, column) {
+    getInfo(row) {
       console.log(row)
       this.$router.push({
         path: "/graph/tempTable/"+(new Date().getMonth()+1)+"-"+new Date().getDate()+"-"+row.time

@@ -208,9 +208,6 @@
                     this.updateContent[i] = rowNode.row[i];
                 }
                 console.log(this.updateContent)
-            },
-            loadCa(node,resolve){
-                console.log(node)
             }
         }
     };

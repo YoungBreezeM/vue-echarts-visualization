@@ -1,4 +1,3 @@
-import optionPublicFun from "../../../utils/optionPublic";
 
 const textStyle = {
     "color": "#fff",

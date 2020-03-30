@@ -21,6 +21,7 @@
     import "../../../../public/static/css/gol.scss"
     import "./_EcPie.scss"
     import optionPie from "./option";
+    // eslint-disable-next-line
     let pieStack = []; //消息队列　　
     export default {
         data(){

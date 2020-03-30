@@ -9,51 +9,24 @@ Vue.config.productionTip = false;
 
 
 import {
-  Menu,
-  Icon,
-  Alert,
-  Table,
-  Button,
-  Submenu,
-  Message,
-  MenuItem,
-  Dropdown,
   Cascader,
-  MessageBox,
+  Table,
   TableColumn,
-  DropdownMenu,
-  DropdownItem,
-  MenuItemGroup,
-  Card,
-  Notification,
+  Icon,
+  Message,
   Row,
   Col,
-  Dialog,
-  Input,
 } from 'element-ui';
-Vue.use(Input);
-Vue.use(Dialog);
-Vue.use(Card);
+
+Vue.use(TableColumn);
+Vue.use(Table);
+Vue.use(Cascader);
 Vue.use(Row);
 Vue.use(Col);
-Vue.use(Menu);
 Vue.use(Icon);
-Vue.use(Alert);
-Vue.use(Table);
-Vue.use(Button);
-Vue.use(Submenu);
-Vue.use(Cascader);
-Vue.use(MenuItem);
-Vue.use(Dropdown);
-Vue.use(TableColumn);
-Vue.use(DropdownMenu);
-Vue.use(DropdownItem);
-Vue.use(MenuItemGroup);
+
 Vue.prototype.$message = Message;
-Vue.prototype.$notify = Notification;
-Vue.prototype.$alert = MessageBox.alert;
-Vue.prototype.$prompt = MessageBox.prompt;
-Vue.prototype.$confirm = MessageBox.confirm;
+
 
 new Vue({
   store,

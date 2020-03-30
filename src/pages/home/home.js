@@ -21,9 +21,7 @@ import {
   MenuItem,
   MenuItemGroup,
   Input,
-  Checkbox,
-  CheckboxButton,
-  CheckboxGroup,
+  Timeline,
   Select,
   Button,
   ButtonGroup,
@@ -43,21 +41,16 @@ import {
   Header,
   Aside,
   Main,
-  MessageBox,
-  Message,
-  Notification,
-  Collapse,
-  CollapseItem,
   Table,
   TableColumn,
-  Option,
-  OptionGroup,
-  Pagination,
-  Card,
-  Timeline,
+  Cascader,
   TimelineItem,
-  Cascader
+  Pagination,
+  Option
 } from 'element-ui';
+Vue.use(Option)
+Vue.use(Pagination);
+Vue.use(Timeline)
 Vue.use(Dialog);
 Vue.use(Cascader);
 Vue.use(PageHeader);
@@ -69,9 +62,6 @@ Vue.use(Submenu);
 Vue.use(MenuItem);
 Vue.use(MenuItemGroup);
 Vue.use(Input);
-Vue.use(Checkbox);
-Vue.use(CheckboxButton);
-Vue.use(CheckboxGroup);
 Vue.use(Select);
 Vue.use(Button);
 Vue.use(ButtonGroup);
@@ -93,21 +83,7 @@ Vue.use(Aside);
 Vue.use(Main);
 Vue.use(Table);
 Vue.use(TableColumn);
-Vue.use(Collapse);
-Vue.use(CollapseItem);
-Vue.use(Option);
-Vue.use(OptionGroup);
-Vue.use(Pagination);
-Vue.use(Card);
-Vue.use(Timeline);
-Vue.use(TimelineItem);
-Vue.prototype.$msgbox = MessageBox;
-Vue.prototype.$alert = MessageBox.alert;
-Vue.prototype.$confirm = MessageBox.confirm;
-Vue.prototype.$prompt = MessageBox.prompt;
-Vue.prototype.$notify = Notification;
-Vue.prototype.$message = Message;
-
+Vue.use(TimelineItem)
 
 new Vue({
   router: index,

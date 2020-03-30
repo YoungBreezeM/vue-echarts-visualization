@@ -32,6 +32,12 @@ pages: &pages
     filename: 'graph.html'
     title: 'graph page'
     chunks: ['chunk-vendors', 'chunk-common', 'graph']
+  login:
+    entry: './src/pages/login/login.js'
+    template: 'public/login.html'
+    filename: 'login.html'
+    title: 'login page'
+    chunks: ['chunk-vendors', 'chunk-common', 'login']
 
 #项目基础配置
 config:

@@ -4,6 +4,7 @@
         <transition name="toggle">
             <router-view></router-view>
         </transition>
+
     </div>
 </template>
 

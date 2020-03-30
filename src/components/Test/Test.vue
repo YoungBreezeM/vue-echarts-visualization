@@ -13,23 +13,9 @@
         props: {
             msg:String
         },
-        computed:{
-            count(){
-                console.log("count")
-                return store.state.count;
-            }
-        },
-        created(){
-          console.log("created")
-        },
-        mounted(){
-          console.log("mound")
-        },
-        methods:{
-            add(){
-                console.log("hello")
-                store.commit(types.COUNT)
-               console.log(store.state.count)
+        data(){
+            cascader:{
+
             }
         }
     };

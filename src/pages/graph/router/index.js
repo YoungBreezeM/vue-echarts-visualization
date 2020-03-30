@@ -1,30 +1,13 @@
-import Vue from 'vue';
-import VueRouter from "vue-router";
 
-import store from "../../../store/store.js";
-import types from "../../../store/types";
-
+import routerCenter from "../../../lib/routerCenter";
+import verifyLogin from "../../../lib/interceptor";
 let GraphIndex = () => import("../view/GraphIndex.vue");
 let TempTable =()=>import("../components/tempTable/TempTable");
 let ClassInfo =()=>import("../components/classInfo/ClassInfo");
 let DormitoryInfo =()=>import("../components/dormitoryInfo/DormitoryInfo");
 let UninputTable =()=>import("../components/unInputTable/UninputTable") ;
 let TeacherInfo =()=>import("../components/teacherInfo/TeacherInfo");
-// let OuterInfo = () => import ('../../components/echarts/info/OuterInfo.vue');
-// let UninputStuTable = () => import ('../../components/echarts/table/UninputStuTable');
-// let OutStudentTable = () => import ('../../components/echarts/table/OutStudentTable.vue');
-// let OutTeacherTable = () => import ('../../components/echarts/table/OutTeacherTable.vue');
-// let TeacherInfo = () => import ('../../components/echarts/info/TeacherInfo.vue');
-// let TempStudentTable = () => import ('../../components/echarts/table/TempTable.vue');
-// let UninputStudentPie = () => import ('../../components/echarts/pie/UninputStudentPie.vue');
-// let DormitoryInfo = () => import ('../../components/echarts/info/DormitoryInfo.vue');
-// let StudentTempLine = () => import ('../../components/echarts/line/StudentTempLine.vue');
-// let TempTeacherTable = () => import ('../../components/echarts/table/TempTeacherTable.vue');
-// let ClassStuInfo = () => import ('../../components/echarts/info/ClassInfo.vue');
-// let Message = ()=> import("../view/Portal") ;
-// let FullScreen =()=> import("./view/FullScreen/FullScreen");
 
-Vue.use(VueRouter);//全局注册路由
 
 let routes = [
     {
@@ -57,99 +40,12 @@ let routes = [
         name:"teacherInfo",
         component:TeacherInfo
     }
-    // {
-    //     path: "/whole/message",
-    //     name: 'message',
-    //     component:Message
-    // },
-    // {
-    //     path: "/whole/fullScreen",
-    //     name: 'fullScreen',
-    //     component:FullScreen
-    // },
-    // {
-    //     path: '/whole/tempStudentTable/:time/:role',
-    //     name: 'tempStudentTable',
-    //     component: TempStudentTable
-    // },
-    // {
-    //     path: '/whole/outerInfo/:personId',
-    //     name: 'outerInfo',
-    //     component: OuterInfo
-    // },
-    // {
-    //     path: '/whole/uninputStuTable/:department/:grade',
-    //     name: 'uninputStuTable',
-    //     component: UninputStuTable
-    // },
-    // {
-    //     path: '/whole/outStudentTable/:time/:role',
-    //     name: 'outStudentTable',
-    //     component: OutStudentTable
-    // },
-    // {
-    //     path: '/whole/outTeacherTable/:time/:role',
-    //     name: 'outTeacherTable',
-    //     component: OutTeacherTable
-    // },
-    // {
-    //     path: '/whole/teacherInfo/:department/:flag',
-    //     name: 'teacherInfo',
-    //     component: TeacherInfo
-    // },
-    // {
-    //     path: '/whole/uninputStudentPie/:department',
-    //     name: 'uninputStudentPie',
-    //     component: UninputStudentPie
-    // },
-    // {
-    //     path: '/whole/dormitoryInfo/:dormitoryNum',
-    //     name: 'dormitoryInfo',
-    //     component: DormitoryInfo
-    // },
-    // {
-    //     path: '/whole/studentTempLine/:name/:role',
-    //     name: 'studentTempLine',
-    //     component: StudentTempLine
-    // },
-    // {
-    //     path: '/whole/tempTeacherTable/:time/:role',
-    //     name: 'tempTeacherTable',
-    //     component: TempTeacherTable
-    // },
-    // {
-    //     path: '/whole/classStuInfo/:classNo',
-    //     name: 'classStuInfo',
-    //     component: ClassStuInfo
-    // }
 ];
 
-// 页面刷新时，重新赋值token
-if (window.localStorage.getItem('token')) {
-    store.commit(types.LOGIN, window.localStorage.getItem('token'))
-}
+//注册路由
+let index = routerCenter.registerRouter(routes);
 
+//验证是否登录
+verifyLogin(index);
 
-let index = new VueRouter({
-    mode: 'history',
-    routes: routes
-});
-
-
-index.beforeEach((to, from, next) => {
-    // if (to.matched.some((r) => r.meta.requireAuth)) {
-    //     // eslint-disable-next-line no-undef
-    //     if (localStorage.token) {   //判断是否已经登录
-    //         next();
-    //     } else {
-    //         next({
-    //             path: '/login',
-    //             // query: { redirect: to.fullPath }
-    //         });
-    //     }
-    // } else {
-    //     next();
-    // }
-    next()
-});
 export default index;

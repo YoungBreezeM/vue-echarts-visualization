@@ -5,9 +5,9 @@ import Http from "../../Http/http";
 import index from "./router";
 import VueAxios from 'vue-axios'
 Vue.use(VueAxios,Http);
-Vue.config.productionTip = false
+Vue.config.productionTip = false;
 
-import 'element-ui/lib/theme-chalk/index.css';
+
 import {
   Menu,
   Icon,

@@ -1,5 +1,13 @@
 {
+  "presets": ["@babel/preset-env"],
   "plugins": [
-    "equire"
+    "equire",
+    [
+      "component",
+      {
+        "libraryName": "element-ui",
+        "styleLibraryName": "theme-chalk"
+      }
+    ]
   ]
 }

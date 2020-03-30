@@ -1,11 +1,10 @@
 <template>
     <div class="port">
-        <el-row>
-            <h1>数据导入</h1>
+        <el-row >
+            <el-button type="danger" icon="el-icon-delete" class="btn-port">批量删除</el-button>
         </el-row>
-        <el-row type="flex" class="port-operation">
-            <el-button type="danger" icon="el-icon-delete" @click="delBacch">批量删除</el-button>
-            <el-upload action="https://jsonplaceholder.typicode.com/posts/" class="upload-demo">
+        <el-row>
+            <el-upload action="https://jsonplaceholder.typicode.com/posts/" class="btn-port">
                 <el-button type="primary" icon="el-icon-upload">点击上传</el-button>
             </el-upload>
         </el-row>
@@ -19,7 +18,6 @@
                 <el-table-column prop="describe" label="描述" show-overflow-tooltip></el-table-column>
                 <el-table-column prop="user" label="执行人" show-overflow-tooltip></el-table-column>
                 <el-table-column label="日期" show-overflow-tooltip>
-                    <template>{{ time | filterDate }}</template>
                 </el-table-column>
                 <el-table-column label="操作" width="120">
                     <template slot-scope="scope">
@@ -31,17 +29,29 @@
                 </el-table-column>
             </el-table>
         </el-row>
-        <el-dialog title="提示" :visible.sync="delDialog" width="30%" v-dialogDrag>
-            <span>删除表格需谨慎，确认要删除这个表格么？</span>
-            <span slot="footer" class="dialog-footer">
-        <el-button @click="delDialog=false">取 消</el-button>
-        <el-button type="primary" @click="delTable">确 定</el-button>
-      </span>
-        </el-dialog>
+        <el-row style="margin: 40px 0 0 0 ">
+            <el-col :offset="8">
+                <el-pagination
+                        :current-page="currentPage4"
+                        :page-sizes="[100, 200, 300, 400]"
+                        :page-size="100"
+                        layout="total, sizes, prev, pager, next, jumper"
+                        :total="400">
+                </el-pagination>
+            </el-col>
+        </el-row>
+        <footer style="text-align: center;font-size: 14px;">
+            <div>
+                <p class="thanks-info">
+                    感谢Vue、Echarts、Element-ui、Vue-Route等技术支持
+                </p>
+                <p class="thanks-info">Copyright &copy;2015-2017 H-ui.admin v3.1 All Rights Reserved.</p>
+            </div>
+        </footer>
     </div>
 </template>
 <script>
-    import "./port.scss"
+    import "./port.scss";
 
     export default {
         name: "port",
@@ -61,14 +71,16 @@
                         user: "admin"
                     }
                 ],
+                currentPage1: 5,
+                currentPage2: 5,
+                currentPage3: 5,
+                currentPage4: 4,
                 delDialog: false,
                 operationIndex: 0,
                 operationName: ""
             };
         },
         methods: {
-            delBacch() {
-            },
             delOperation(index, name) {
                 this.operationIndex = index;
                 this.operationName = name;

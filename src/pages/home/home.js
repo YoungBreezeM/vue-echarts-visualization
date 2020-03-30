@@ -4,11 +4,12 @@ import index from './router'
 import store from '../../store'
 import Http from "../../Http/http";
 import VueAxios from 'vue-axios'
+
 Vue.use(VueAxios, Http);
-// import '../../control/directives.js'
+
 Vue.config.productionTip = false;
 
-import 'element-ui/lib/theme-chalk/index.css';
+
 import {
   PageHeader,
   Dialog,
@@ -57,7 +58,6 @@ import {
   TimelineItem,
   Cascader
 } from 'element-ui';
-
 Vue.use(Dialog);
 Vue.use(Cascader);
 Vue.use(PageHeader);
@@ -108,12 +108,7 @@ Vue.prototype.$prompt = MessageBox.prompt;
 Vue.prototype.$notify = Notification;
 Vue.prototype.$message = Message;
 
-// // import moment from 'moment'
-// import moment from 'moment'
-// Vue.filter('filterDate', function(dataStr, pattern="YYYY-MM-DD HH:mm:ss"){
-//   // 如果直接调用得到的是当前的时间，可以通过传递值，来获取对应的时间
-//   return moment(dataStr).format(pattern);
-// })
+
 new Vue({
   router: index,
   store,

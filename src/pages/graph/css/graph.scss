@@ -39,7 +39,7 @@
     left: 0;
     top: 0;
     right: 0;
-    position: absolute;
+    position: fixed;
     transform: translateX(-500px) translateY(-500px) rotate(0deg) scale(0.1);
     opacity: 0;
   }

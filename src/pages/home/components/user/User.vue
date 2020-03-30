@@ -51,13 +51,14 @@
                 </el-pagination>
             </el-col>
         </el-row>
-        <el-dialog title="提示" :visible.sync="delDialog" width="30%" v-dialogDrag>
-            <span>删除表格需谨慎，确认要删除这个表格么？</span>
-            <span slot="footer" class="dialog-footer">
-        <el-button @click="delDialog=false">取 消</el-button>
-        <el-button type="primary" @click="delTable">确 定</el-button>
-      </span>
-        </el-dialog>
+        <footer style="text-align: center;font-size: 14px;">
+            <div>
+                <p class="thanks-info">
+                    感谢Vue、Echarts、Element-ui、Vue-Route等技术支持
+                </p>
+                <p class="thanks-info">Copyright &copy;2015-2017 H-ui.admin v3.1 All Rights Reserved.</p>
+            </div>
+        </footer>
         <el-dialog
                 title="用户信息更新"
                 :visible.sync="centerDialogVisible"
@@ -67,34 +68,39 @@
                 <el-col hidden>
                     <el-input v-model="updateContent.id"></el-input>
                 </el-col>
-                <el-col :span="6" >
-                    <span>学号:</span><el-input v-model="updateContent.num" readonly></el-input>
-                </el-col>
-            </el-row>
-            <el-row class="up-info">
-                <el-col :span="6" >
-                   <span>用户名：</span> <el-input v-model="updateContent.userName"></el-input>
-                </el-col>
-            </el-row>
-            <el-row class="up-info">
-                <el-col :span="6" >
-                    <span>密码：</span> <el-input v-model="updateContent.password"></el-input>
-                </el-col>
-            </el-row>
-            <el-row class="up-info">
-                <el-col :span="6" >
-                    <span>工作单位：</span><el-input v-model="updateContent.employer"></el-input>
+                <el-col :span="6">
+                    <span>学号:</span>
+                    <el-input v-model="updateContent.num" readonly></el-input>
                 </el-col>
             </el-row>
             <el-row class="up-info">
                 <el-col :span="6">
-                    <span>联系方式：</span><el-input v-model="updateContent.phone"></el-input>
+                    <span>用户名：</span>
+                    <el-input v-model="updateContent.userName"></el-input>
                 </el-col>
             </el-row>
             <el-row class="up-info">
-                <el-col :span="6" >
+                <el-col :span="6">
+                    <span>密码：</span>
+                    <el-input v-model="updateContent.password"></el-input>
+                </el-col>
+            </el-row>
+            <el-row class="up-info">
+                <el-col :span="6">
+                    <span>工作单位：</span>
+                    <el-input v-model="updateContent.employer"></el-input>
+                </el-col>
+            </el-row>
+            <el-row class="up-info">
+                <el-col :span="6">
+                    <span>联系方式：</span>
+                    <el-input v-model="updateContent.phone"></el-input>
+                </el-col>
+            </el-row>
+            <el-row class="up-info">
+                <el-col :span="6">
                     <span>角色：</span>
-                    <el-select v-model="updateContent.role" multiple >
+                    <el-select v-model="updateContent.role" multiple>
                         <el-option
                                 v-for="item in roleList"
                                 :key="item.value"
@@ -106,31 +112,52 @@
             </el-row>
             <el-row class="up-info">
                 <el-col :span="6">
-                  <span>权限：</span>
-                  <el-cascader
-                          placeholder="添加权限"
-                          :options="permissions"
-                          :props="{ multiple: true, checkStrictly: true}"
-                          filterable></el-cascader>
+                    <span>权限：</span>
+
+                    <el-cascader
+                            v-model="selected"
+                            :options="permissions"
+                            :props="{ multiple: true, checkStrictly: true}"
+                    ></el-cascader>
                 </el-col>
             </el-row>
-            <span slot="footer" class="dialog-footer">
-    <el-button @click="centerDialogVisible = false">取 消</el-button>
-    <el-button type="primary" @click="centerDialogVisible = false">确 定</el-button>
-  </span>
         </el-dialog>
     </div>
+
 </template>
 <script>
-    import user from "../../../json/user/user";
-    import userList from "../../../json/user/userList";
-    import permissions from "../../../json/user/permissions";
-    import roleList from "../../../json/user/roleList";
+    import user from "../../../../json/user/user";
+    import userList from "../../../../json/user/userList";
+    import roleList from "../../../../json/user/roleList";
     import "./user.scss"
     export default {
         name: "port",
         data() {
             return {
+                selected:["1",["1","1-1"]],
+                permissions:[
+                    {
+                        value: '1',
+                        label: '计算机学院',
+                        children: [
+                            {
+                                value: "1-1",
+                                label: "17级"
+                            },
+                        ],
+                    },
+                    {
+                        value:'2',
+                        label:'陶瓷学院',
+                        children:[
+                            {
+                                value:"2-1",
+                                label:"17级"
+
+                            }
+                        ]
+                    }
+                ],
                 centerDialogVisible: false,
                 content: "",// 搜索框内容
                 currentPage1: 5,
@@ -142,13 +169,10 @@
                 delDialog: false,
                 operationIndex: 0,
                 operationName: "",
-                permissions:permissions,
-                roleList:roleList,
+                roleList: roleList,
             };
         },
         methods: {
-            delBacch() {
-            },
             delOperation(rowNode) {
                 console.log(rowNode)
             },
@@ -184,6 +208,9 @@
                     this.updateContent[i] = rowNode.row[i];
                 }
                 console.log(this.updateContent)
+            },
+            loadCa(node,resolve){
+                console.log(node)
             }
         }
     };

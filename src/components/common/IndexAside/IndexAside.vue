@@ -1,12 +1,12 @@
 <template>
   <div class="index-aside">
     <div class="aside-name">
-      <h1>后台管理系统</h1>
+      <h1>数据可视化系统</h1>
     </div>
     <el-menu
       class="el-menu-vertical-demo"
       width="100%"
-      :default-active="$route.path"
+      default-active="/home"
       router
       unique-opened
     >
@@ -31,55 +31,56 @@
 </template>
 
 <script>
-import comFunc from "../../../utils/comPublic";
 import "./index-aside.scss"
 export default {
   name: "index-aside",
   data() {
     return {
       manageMenuList: [ 
-        { route: "/port", name: "数据导入、导出" },
+        { route: "/port", name: "数据管理" },
         {route:"/user",   name:"用户管理"}
       ],
 
     };
   },
-  mounted() {
-    let nowPath = this.$route.path; // 获取当前路由地址
-    let slashNum = comFunc.slashNum(nowPath); // 当前路由有几个 / ,用来判断是一级路由还是二级路由
-    this.$store.commit("add_tabs", { route: "/home", name: "首页" }); // 默认首页是一定有的
-    if (slashNum === 1) {
-      // 刷新时判断当前路由是否已经加入 tab 数组中，若已经在数组中，则 切换 activeIndex
-      let tabListFlag = false; // 用于设置 判断 点击路由在 tab 数组中是否已存在，默认不存在数组中
-      for (let option of this.tabList) {
-        // 在 tab 数组中已存在,更改 activeIndex
-        if (option.name === this.$route.name) {
-          tabListFlag = true;
-          this.$store.commit("set_active_index", nowPath);
-          break;
+  methods:{
+    //添加tab
+    addTab(router){
+      for (let value of this.manageMenuList){
+        if(value.route===router){
+          this.$emit("addTab",JSON.stringify(value));
+          return;
         }
       }
-      if (!tabListFlag) {
-        if (nowPath !== "/home") {
-          // 判断当前路由是否是首页，如果不是，则将 当前路由 添加到 tab 数组中，并更改 activeIndex，如果是则改变其 activeIndex
-          this.$store.commit("add_tabs", {
-            route: nowPath,
-            name: this.$route.name
-          });
-          this.$store.commit("set_active_index", nowPath);
+    },
+    getRoute(router){
+      for (let value of this.manageMenuList){
+        if(value.route===router){
+          return value;
         }
       }
-    } else {
-      // 二级路由更改 activeIndex 到对应的一级路由
-      this.$store.commit("set_active_index", nowPath.slice(0, 5));
+    },
+    initTabList(){
+      //初始化tabList
+      this.$store.commit("addTab", { route: "/home", name: "首页" }); // 默认首页是一定有的
+      //加载当前路由
+      if(this.$route.path!=="/home"){
+        this.$store.commit("addTab",this.getRoute(this.$route.path)); // 默认首页是一定有的
+      }
+
     }
   },
-  computed: {
-    tabList() {
-      // 获取全局配置中 tabList
-      return this.$store.state.tabList;
+  created() {
+    this.initTabList();
+  },
+  watch: {
+  // 监听路由变化
+  $route(to) {
+    if(this.getRoute(to.path)){
+      this.$emit("addTab",this.getRoute(to.path));
     }
   }
+}
 };
 </script>
 

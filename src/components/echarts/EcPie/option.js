@@ -1,4 +1,4 @@
-import optionPublicFun from "../../../utils/optionPublic";
+
 let textStyle = {
     color: "#fff",
     fontWeight: "normal",

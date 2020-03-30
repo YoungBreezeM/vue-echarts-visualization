@@ -10,7 +10,7 @@ let slashNum = function(data){
     }
   }
   return num;
-}
+};
 
 
 let comFunc ={//所有方法的集合

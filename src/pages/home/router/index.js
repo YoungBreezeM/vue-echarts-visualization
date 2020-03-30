@@ -1,13 +1,11 @@
-import Vue from 'vue';
-import VueRouter from "vue-router";
-import store from "../../../store/store.js";
-import types from "../../../store/types";
 
+import routerCenter from "../../../lib/routerCenter";
+import verifyLogin from "../../../lib/interceptor";
 let Index = () => import('../view/Index.vue');
 let IndexHome = () => import("../../../components/common/IndexHome/IndexHome");
-let Port = () => import('../../../components/management/port/Port.vue')
-let User = () => import('../../../components/management/user/User.vue')
-Vue.use(VueRouter); //全局注册路由
+let Port = () => import('../components/port/Port.vue');
+let User = () => import('../components/user/User.vue');
+
 
 let routes = [
   {
@@ -29,7 +27,7 @@ let routes = [
       },
       {
         path: '/port',
-        name: '数据导入、导出',
+        name: '数据管理',
         component: Port
       },
       {
@@ -40,36 +38,9 @@ let routes = [
     ]
   }
 ];
-// 页面刷新时，重新赋值token
-if(window.localStorage.getItem('token')) {
-  store.commit(types.LOGIN, window.localStorage.getItem('token'))
-}
+//注册路由信息
+let index = routerCenter.registerRouter(routes);
+//拦截需要登录验证的路由
+verifyLogin(index)
 
-let index = new VueRouter({
-  mode: 'history',
-  routes: routes
-});
-
-index.beforeEach((to, from, next) => {
-  // if (to.matched.some((r) => r.meta.requireAuth)) {
-  //   // eslint-disable-next-line no-undef
-  //   if (localStorage.token) {   //判断是否已经登录
-  //     console.log(JSON.parse(localStorage.token).role);
-  //     if(JSON.parse(localStorage.token).role[0]==="admin"){
-  //       next();
-  //     }else {
-  //       window.location = "/whole/message"
-  //     }
-  //
-  //   } else {
-  //     next({
-  //       path: '/',
-  //       // query: { redirect: to.fullPath }
-  //     });
-  //   }
-  // } else {
-  //   next();
-  // }
-  next()
-});
 export default index;

@@ -10,13 +10,15 @@
         class="cascader-style"
       ></el-cascader>
     </div>
+<!--    <Loading v-if="!status"></Loading>-->
     <el-table
-      :data="tempNum"
+            :data="tempNum"
       border
       style="width: 100%"
       class="studentInfo"
       @cell-click="getInfo"
       :cell-class-name="addClass"
+      v-if="status"
     >
       <el-table-column prop="time" label="统计时间" show-overflow-tooltip>
       </el-table-column>
@@ -31,30 +33,16 @@
 
 <script>
   import "./today-Tem-Table.scss"
+  import {temp} from "../../../../api/temp";
+  import Loading from "../../../../components/loading/loading";
 export default {
   name: "today-temp-table",
+  components: {Loading},
   data() {
     return {
       tempNum: [
-        {
-          time: "8:00",
-          unnormal: 10,
-          normal: 10,
-          all: 20
-        },
-        {
-          time: "14:00",
-          unnormal: 10,
-          normal: 10,
-          all: 20
-        },
-        {
-          time: "19:00",
-          unnormal: 10,
-          normal: 10,
-          all: 20
-        }
       ],
+      status:false,
       allIndexs: [
         {
           label: "学生",
@@ -70,14 +58,22 @@ export default {
   },
   created() {
     this.role = this.allIndexs[this.checkedVal[0]].label;
+    //加载数据
+    this.loadingTemp();
   },
   methods: {
     getInfo(row) {
       console.log(row)
       this.$router.push({
-        path: "/graph/tempTable/"+(new Date().getMonth()+1)+"-"+new Date().getDate()+"-"+row.time
+        path: "/graph/tempTable/"+(new Date().getMonth()+1)+"-"+new Date().getDate()+"("+row.time+")"
       });
       console.log(new Date().getMonth())
+    },
+    loadingTemp(){
+      temp().then(data=>{
+        this.tempNum = data.object;
+        this.status = !status;
+      })
     },
     // eslint-disable-next-line no-unused-vars
     addClass({columnIndex}){

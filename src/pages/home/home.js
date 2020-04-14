@@ -11,6 +11,7 @@ Vue.config.productionTip = false;
 
 
 import {
+  Notification,
   PageHeader,
   Dialog,
   Dropdown,
@@ -46,6 +47,7 @@ import {
   Cascader,
   TimelineItem,
   Pagination,
+  Message,
   Option
 } from 'element-ui';
 Vue.use(Option)
@@ -83,7 +85,9 @@ Vue.use(Aside);
 Vue.use(Main);
 Vue.use(Table);
 Vue.use(TableColumn);
-Vue.use(TimelineItem)
+Vue.use(TimelineItem);
+Vue.prototype.$message = Message;
+Vue.prototype.$notify = Notification;
 
 new Vue({
   router: index,

@@ -9,6 +9,8 @@
 </template>
 
 <script>
+    import mapPeople from "../../../api/mapPeople";
+
     let mapStack =[];
     import "../../../../public/static/css/gol.scss"
     import echarts from "../../../lib/InitEcharts";
@@ -20,31 +22,48 @@
     import MapJson from "../../../api/MapJson";
     export default {
         props: {
-            renderData:Array
+            renderData:Array,
+            mapId:String,
+            mapName:String,
+            aid:Number
         },
         data(){
             return{
                 clientHeight:"100%",
-                defaultMap:100000,
+                grade:0,
+
             }
         },
-        mounted() {
-            this.draw({
-                mapId:this.defaultMap,
-                mapName:"china",
-                renderData:this.renderData
-            }).then((myChart)=>{
-                myChart.on("click",(params)=>{
-                    this.nextClick(params)
+        created() {
+            console.log(this.mapId);
+            if(this.mapId){
+                console.log(this.mapId);
+                this.draw({
+                    aid:this.aid,
+                    mapId:this.mapId,
+                    mapName:this.mapName,
+                    renderData:this.renderData
+                }).then((myChart)=>{
+                    myChart.on("click",(params)=>{
+                        this.nextClick(params)
+                    })
                 })
-            })
+            }else {
+
+                this.$message.warning({
+                    showClose: true,
+                    message: "数据未录入"
+                });
+            }
+
         },
         methods:{
-           async draw({mapId,mapName,renderData,isState=true}){
+           async draw({aid,mapId,mapName,renderData,isState=true}){
                //画出图形
                 let Map = await MapJson.getMapJson(mapId);
                 if(isState){
                     this.stateBefore({
+                        aid:aid,
                         mapId:mapId,
                         mapName:mapName,
                         renderData:renderData
@@ -63,52 +82,59 @@
                 let myChart = echarts.init(this.$refs.myMap);
                 let newOption = Object.assign(optionMap);
                 newOption.series[0].data = renderData;
+                console.log(mapName);
+                console.log(renderData);
                 newOption.geo.map = mapName;
-                //地图范围跟新
-                this.$emit("mapSwitch",mapName);
+
                 newOption.tooltip.formatter = function(e){
-                    return e.name + "<br />" + "学生总人数：" +
-                           e.data.student + "<br/>" + "教师总人数：" +
-                           e.data.teacher + "<br/>" + "总人数：" + e.value;
+                    if(e.data){
+                        let {name,value,student,teacher} = e.data;
+                        return name +
+                            "<br />" + "学生总人数：" + student +
+                            "<br/>" + "教师总人数：" + teacher +
+                            "<br/>" + "总人数：" + value;
+                    }
+                    return "暂无数据"
                 };
                 myChart.setOption(newOption);
                 return myChart;
             },
-            stateBefore({mapId,mapName,renderData}){
+            stateBefore({aid,mapId,mapName,renderData}){
                 //往mapStack里添加parentId，parentName,返回上一级使用
                 mapStack.push({
+                    aid:aid,
                     mapId: mapId,
                     mapName: mapName,
                     renderData: renderData
                 });
             },
             nextClick(params) {
-                //点击跳转下一个
-                let mapId = areaMap[params.name];
-                let infoJson = {
-                    "河南": dataHeNan,
-                    "平顶山市":dataPDSMap
-                };
-                console.log(mapId);
-                if(infoJson[params.name]===undefined){
-                    this.$message.warning({
-                        showClose: true,
-                        message: "数据未录入"
-                    });
-                    return;
-                }
-                this.draw({
-                    mapId:mapId,
-                    mapName:params.name,
-                    renderData:infoJson[params.name]
-                })
+               if(areaMap[params.name]){
+                   //点击跳转下一个地图
+                   this.$emit("mapSwitch",{
+                       aid:params.data.id,
+                       mapId:areaMap[params.name],
+                       mapName:params.name,
+                   });
+               }else {
+                   this.$message.warning({
+                       showClose: true,
+                       message: "数据未录入"
+                   });
+               }
+
+
             },
             callBack() {
                //返回上一级
                 if (mapStack.length > 1) {
+
                     mapStack.pop();
-                    let {mapId, mapName,renderData} = mapStack[mapStack.length - 1];
-                    console.log(mapStack)
+                    let {aid,mapId, mapName,renderData} = mapStack[mapStack.length - 1];
+                    console.log(mapStack);
+                    this.$emit("mapBack",{
+                        aid:aid
+                    });
                     this.draw({
                         mapId:mapId,
                         mapName:mapName,
@@ -119,11 +145,6 @@
 
             },
         },
-        watch:{
-            renderData(params){
-                this.renderData = params;
-            }
-        }
 
     };
 

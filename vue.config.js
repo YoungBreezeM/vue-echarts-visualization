@@ -11,6 +11,7 @@ const {config}= yml.safeLoad(fs.readFileSync("./_config.yml", "utf-8"));
 const UglifyJsPlugin = require("uglifyjs-webpack-plugin")
 
 
+
 config["configureWebpack"] =(cg)=>{
   if (process.env.NODE_ENV === 'production') {
     // 代码压缩

@@ -4,7 +4,7 @@ const MapJson = {
     async getMapJson(mapId) {
         return Http({
             method:"get",
-            url:"/static/json/"+mapId+".json"
+            url:"/static/"+mapId+".json"
         })
     }
 };

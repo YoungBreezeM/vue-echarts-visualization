@@ -18,6 +18,7 @@ import {
   Col,
 } from 'element-ui';
 
+
 Vue.use(TableColumn);
 Vue.use(Table);
 Vue.use(Cascader);

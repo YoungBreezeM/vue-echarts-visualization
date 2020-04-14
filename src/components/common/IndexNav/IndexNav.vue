@@ -12,15 +12,15 @@
                         <span class="nav-user">{{userName}}</span>
                         <i class="el-icon-arrow-down el-icon--right"></i>
                       </span>
-                    <el-dropdown-menu slot="dropdown">
+                    <el-dropdown-menu slot="dropdown" >
                         <el-dropdown-item command="a">
                             <i class="el-icon-postcard"></i>个人信息
                         </el-dropdown-item>
                         <el-dropdown-item command="b">
                             <i class="el-icon-setting"></i>设置
                         </el-dropdown-item>
-                        <el-dropdown-item command="c">
-                            <i class="el-icon-switch-button"></i>退出
+                        <el-dropdown-item command="c"  @click.native="logOut">
+                            <i class="el-icon-switch-button"  ></i>退出
                         </el-dropdown-item>
                     </el-dropdown-menu>
                 </el-dropdown>
@@ -45,9 +45,8 @@
         },
         methods: {
             logOut() {
-                alert("hello");
                 store.commit(types.LOGOUT);
-                window.location.href = "/login";
+                window.location.href = "login.html";
             },
             hideNav(){
                 this.isHide = !this.isHide;

@@ -23,19 +23,19 @@ let populationNum_HeNan ={
             name: "平顶山市",
             type: "line",
             data: [10, 0, 0, 10, 12, 0, 1],
-            color: "#6dcc37"
+
         },
         {
             name: "洛阳市",
             type: "line",
             data: [0, 20, 0, 50, 120, 0, 0],
-            color: "#cc2e19"
+
         },
         {
             name: "郑州市",
             type: "line",
             data: [0, 100, 15, 0, 20, 0, 0],
-            color: "#cc2e19"
+
         }
     ],
     xAxis:{

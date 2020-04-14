@@ -11,12 +11,12 @@
                         clearable
                         @keyup.enter.native="searchContent"
                 >
-                    <i class="el-icon-search el-input__icon" slot="suffix" @click="searchContent"></i>
+                    <i class="el-icon-search el-input__icon" style="color:#111739" slot="suffix" @click="searchContent"></i>
                 </el-input>
             </el-col>
         </el-row>
         <el-row>
-            <el-table :data="files" style="width: 100%;" border>
+            <el-table :data="currentPage.data" style="width: 100%;" border>
                 <el-table-column type="selection" width="55"></el-table-column>
                 <el-table-column prop="id" label="id" width="120"></el-table-column>
                 <el-table-column prop="num" label="学号 / 工号" width="120"></el-table-column>
@@ -43,11 +43,11 @@
                 <el-pagination
                         @size-change="handleSizeChange"
                         @current-change="handleCurrentChange"
-                        :current-page="currentPage4"
-                        :page-sizes="[100, 200, 300, 400]"
-                        :page-size="100"
+                        :current-page="1"
+                        :page-sizes="[10]"
+                        :page-size="10"
                         layout="total, sizes, prev, pager, next, jumper"
-                        :total="400">
+                        :total="1609">
                 </el-pagination>
             </el-col>
         </el-row>
@@ -66,41 +66,39 @@
                 center>
             <el-row class="up-info">
                 <el-col hidden>
-                    <el-input v-model="updateContent.id"></el-input>
+                    <el-input v-model="updateContent.id" :disabled="true"></el-input>
                 </el-col>
-                <el-col :span="6">
-                    <span>学号:</span>
-                    <el-input v-model="updateContent.num" readonly></el-input>
+                <p>学号：</p>
+                <el-input v-model="updateContent.num" :disabled="true"></el-input>
+            </el-row>
+            <el-row class="up-info">
+                <el-col>
+                    <p>用户名：</p>
+                    <el-input v-model="updateContent.username" :disabled="true"></el-input>
                 </el-col>
             </el-row>
             <el-row class="up-info">
-                <el-col :span="6">
-                    <span>用户名：</span>
-                    <el-input v-model="updateContent.userName"></el-input>
-                </el-col>
-            </el-row>
-            <el-row class="up-info">
-                <el-col :span="6">
-                    <span>密码：</span>
+                <el-col >
+                    <p>密码：</p>
                     <el-input v-model="updateContent.password"></el-input>
                 </el-col>
             </el-row>
             <el-row class="up-info">
-                <el-col :span="6">
-                    <span>工作单位：</span>
-                    <el-input v-model="updateContent.employer"></el-input>
+                <el-col >
+                    <p>工作单位：</p>
+                    <el-input v-model="updateContent.employer" :disabled="true"></el-input>
                 </el-col>
             </el-row>
             <el-row class="up-info">
-                <el-col :span="6">
-                    <span>联系方式：</span>
-                    <el-input v-model="updateContent.phone"></el-input>
+                <el-col >
+                    <p>联系方式：</p>
+                    <el-input v-model="updateContent.phone" :disabled="true"></el-input>
                 </el-col>
             </el-row>
             <el-row class="up-info">
-                <el-col :span="6">
-                    <span>角色：</span>
-                    <el-select v-model="updateContent.role" multiple>
+                <el-col >
+                    <p>角色：</p>
+                    <el-select v-model="updateContent.role">
                         <el-option
                                 v-for="item in roleList"
                                 :key="item.value"
@@ -111,16 +109,21 @@
                 </el-col>
             </el-row>
             <el-row class="up-info">
-                <el-col :span="6">
-                    <span>权限：</span>
-
-                    <el-cascader
-                            v-model="selected"
-                            :options="permissions"
-                            :props="{ multiple: true, checkStrictly: true}"
-                    ></el-cascader>
+                <el-col :span="4" :offset="11" >
+                    <el-button type="success" @click="updateUserInfo">提交</el-button>
                 </el-col>
             </el-row>
+<!--            <el-row class="up-info">-->
+<!--                <el-col :span="6">-->
+<!--                    <span>权限：</span>-->
+
+<!--                    <el-cascader-->
+<!--                            v-model="selected"-->
+<!--                            :options="permissions"-->
+<!--                            :props="{ multiple: true, checkStrictly: true}"-->
+<!--                    ></el-cascader>-->
+<!--                </el-col>-->
+<!--            </el-row>-->
         </el-dialog>
     </div>
 
@@ -130,61 +133,65 @@
     import userList from "../../../../json/user/userList";
     import roleList from "../../../../json/user/roleList";
     import "./user.scss"
+    import {getUserList, getUser, getUserByNum, updateUser} from "../../../../api/user";
     export default {
         name: "port",
         data() {
             return {
                 selected:["1",["1","1-1"]],
-                permissions:[
-                    {
-                        value: '1',
-                        label: '计算机学院',
-                        children: [
-                            {
-                                value: "1-1",
-                                label: "17级"
-                            },
-                        ],
-                    },
-                    {
-                        value:'2',
-                        label:'陶瓷学院',
-                        children:[
-                            {
-                                value:"2-1",
-                                label:"17级"
-
-                            }
-                        ]
-                    }
-                ],
                 centerDialogVisible: false,
                 content: "",// 搜索框内容
-                currentPage1: 5,
-                currentPage2: 5,
-                currentPage3: 5,
-                currentPage4: 4,
+                currentPage:{
+                    total:null,
+                    pageSize:10,
+                    data:null,
+                },
                 updateContent: user,
-                files: userList,
+                userList: null,
                 delDialog: false,
                 operationIndex: 0,
                 operationName: "",
                 roleList: roleList,
             };
         },
+        created(){
+            this.loadingUserList();
+        },
         methods: {
+            loadingUserList(id=1){
+                getUserList(id)
+                    .then(data=>{
+                       this.currentPage.data = data.data.studentlist;
+                       this.currentPage.total = data.data.countpage;
+                    })
+            },
+            updateUserInfo(){
+              updateUser(this.updateContent.num,this.updateContent.password)
+                  .then(data=>{
+                      this.$notify({
+                          title: "成功",
+                          message: data.object,
+                          type: "success"
+                      });
+                      this.centerDialogVisible = !this.centerDialogVisible;
+                  })
+            },
             delOperation(rowNode) {
-                console.log(rowNode)
+
+                this.$message.warning({
+                    showClose: true,
+                    message: "数据不可删除"
+                });
             },
             delTable() {
                 this.files.splice(this.operationIndex, 1);
                 this.delDialog = false;
             },
             handleSizeChange(val) {
-                console.log(`每页 ${val} 条`);
+                this.loadingUserList(val)
             },
             handleCurrentChange(val) {
-                console.log(`当前页: ${val}`);
+                this.loadingUserList(val)
             },
             searchContent() {
                 let input_val = this.content;
@@ -195,19 +202,38 @@
                         type: "error"
                     });
                 } else {
-                    this.$notify({
-                        title: "成功",
-                        message: "您要查询的内容是--" + input_val + "--",
-                        type: "success"
+                    getUserByNum(input_val).then(data=>{
+                       this.currentPage.data = [];
+                       this.currentPage.data.push(data.object);
+                        this.$notify({
+                            title: "成功",
+                            message: "您要查询的学号是" + input_val,
+                            type: "success"
+                        });
+                    }).catch(err=>{
+                        this.$notify({
+                            title: "搜索失败",
+                            message: "您要查询的学号" + input_val+"不合法",
+                            type: "error"
+                        });
                     });
+
                 }
             },
             updateDialog(rowNode) {
                 this.centerDialogVisible = !this.centerDialogVisible;
-                for (let i in this.updateContent) {
-                    this.updateContent[i] = rowNode.row[i];
+                let {id} = rowNode.row;
+                console.log(id);
+                getUser(id).then(data=>{
+                   this.updateContent = data.object;
+                })
+            }
+        },
+        watch:{
+            content(params){
+                if(params===""){
+                    this.loadingUserList();
                 }
-                console.log(this.updateContent)
             }
         }
     };

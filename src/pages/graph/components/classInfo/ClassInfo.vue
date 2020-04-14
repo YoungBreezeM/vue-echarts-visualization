@@ -28,6 +28,7 @@
 
 <script>
   import "./_classInfo.scss"
+  import {getClassInfo} from "../../../../api/info";
 export default {
   name: "class-info",
   data() {
@@ -35,24 +36,6 @@ export default {
       clientHeight: "100%",
       dormitoryNum: null,
       classInfo: [
-        {
-          id: 171210111,
-          name: "王小虎",
-          dormitoryNum: 3301,
-          tel: 13155443325
-        },
-        {
-          id: 171210111,
-          name: "王小虎",
-          dormitoryNum: 3301,
-          tel: 13155443325
-        },
-        {
-          id: 171210111,
-          name: "王小虎",
-          dormitoryNum: 3301,
-          tel: 13155443325
-        }
       ]
     };
   },
@@ -63,8 +46,15 @@ export default {
   },
   mounted() {
     this.setClient();
+    this.loadingClassInfo();
   },
   methods: {
+    loadingClassInfo(){
+      getClassInfo(this.$route.params.className)
+              .then(data=>{
+                this.classInfo = data.object.classStuInfo;
+              })
+    },
     setClient() {
       let clientHeight = document.documentElement
         ? document.documentElement.clientHeight

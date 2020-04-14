@@ -1,4 +1,5 @@
 import axios from "axios"
+import checkApi from "../utils/checkApi";
 
 /* 防止重复提交，利用axios的cancelToken */
 let pending = []; // 声明一个数组用于存储每个ajax请求的取消函数和ajax标识
@@ -25,8 +26,8 @@ const removePending= (config, f) => {
 
 /* 创建axios实例 */
 const Http = axios.create({
-  baseURL: "/", //** 基础地址 要请求的url前缀
-  timeout: 5000 // 请求超时时间
+  baseURL: "/api/", //** 基础地址 要请求的url前缀
+  timeout: 50000 // 请求超时时间
 });
 
 /* request拦截器 */
@@ -39,13 +40,16 @@ Http.interceptors.request.use(
           removePending(config, c);
         });
       }
-      // 在这里可以统一修改请求头，例如 加入 用户 token 等操作
-      //   if (store.getters.sessionId) {
-      //     config.headers['X-SessionId'] = getSessionId(); // 让每个请求携带token--['X-Token']为自定义key
-      //   }
+      // 在这里可以统一修改请求头，例如 加入 用户 token 等操
+        if (window.localStorage.token) {
+          config.headers['token'] = window.localStorage.token;
+        }
+
       return config;
     },
     (error) => {
+        console.log("error")
+        console.log(error)
       Promise.reject(error);
     }
 );
@@ -57,6 +61,7 @@ Http.interceptors.response.use(
       // 移除队列中的该请求，注意这时候没有传第二个参数f
       removePending(response.config);
       // 获取返回数据，并处理。按自己业务需求修改。
+        checkApi(response.data);
       if (response.status !== 200) {
         if (response.status === 401) {
           if (location.hash === "/") {

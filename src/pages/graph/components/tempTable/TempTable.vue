@@ -40,6 +40,7 @@
 
 <script>
     import "./tempTable.scss"
+    import {unusualTemp} from "../../../../api/temp";
 
     export default {
         name: "temp-table",
@@ -47,19 +48,19 @@
             return {
                 clientHeight: "100%",
                 studentTable: [
-                    {
-                        id: 171210111,
-                        temperature: "38.5",
-                        name: "王小虎",
-                        sex: "男",
-                        emergencyName: "xxx",
-                        emergencyPhone: 1524599999,
-                        address: "上海市普陀区金沙江路 1518 弄",
-                        className: "17学前一班",
-                        dormitoryNum: 3331,
-                        outDoor: "否",
-                        tel: 13155443325
-                    }
+                    // {
+                    //     id: 171210111,
+                    //     temperature: "38.5",
+                    //     name: "王小虎",
+                    //     sex: "男",
+                    //     emergencyName: "xxx",
+                    //     emergencyPhone: 1524599999,
+                    //     address: "上海市普陀区金沙江路 1518 弄",
+                    //     className: "17学前一班",
+                    //     dormitoryNum: 3331,
+                    //     outDoor: "否",
+                    //     tel: 13155443325
+                    // }
                 ]
             };
         },
@@ -71,8 +72,17 @@
         },
         mounted() {
             this.setClient();
+            //加载数据
+            this.loadingUnTemp()
         },
         methods: {
+            loadingUnTemp(){
+                unusualTemp((new Date().getMonth()+1)+"-"+(new Date().getDate()-1))
+                    .then(data=>{
+                        console.log(data)
+                        this.studentTable =data.object;
+                    })
+            },
             setClient() {
                 let clientHeight = document.documentElement
                     ? document.documentElement.clientHeight

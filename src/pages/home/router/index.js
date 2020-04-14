@@ -41,6 +41,6 @@ let routes = [
 //注册路由信息
 let index = routerCenter.registerRouter(routes);
 //拦截需要登录验证的路由
-verifyLogin(index)
+verifyLogin(index);
 
 export default index;

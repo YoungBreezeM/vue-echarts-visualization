@@ -11,11 +11,20 @@ cssConfig: &cssConfig
 #开发环境部署
 devServeConfig: &devServeConfig
   host: 0.0.0.0
-  port: 8080 # 要转发服务端口号
+  port: 8081 # 要监听服务端口号
   https: false # 是否开启https
-  open: true #配置自动启动浏览器  http:#172.11.11.22:8888/rest/XX/
+  open: false #配置自动启动浏览器  http:#172.11.11.22:8888/rest/XX/
   hotOnly: true # 热更新
-#  proxy: http://zuul.router.com:8081   # 配置转发请求服务器件
+  proxy:
+    /api:
+      target: 'http://127.0.0.1:8080'
+      ws: false
+      changeOrigin: true
+      pathRewrite: {
+        '^/api': '/'
+      }
+
+   # 配置转发请求服务器件
   disableHostCheck: true
 
 #多页面配置

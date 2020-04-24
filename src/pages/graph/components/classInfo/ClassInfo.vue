@@ -23,6 +23,19 @@
       <el-table-column prop="tel" label="联系方式" show-overflow-tooltip>
       </el-table-column>
     </el-table>
+    <el-row style="margin: 40px 0 0 0 ">
+      <el-col :offset="8">
+        <el-pagination
+                @size-change="handleSizeChange"
+                @current-change="handleCurrentChange"
+                :current-page="1"
+                :page-sizes="[10]"
+                :page-size="10"
+                layout="total, sizes, prev, pager, next, jumper"
+                :total="count">
+        </el-pagination>
+      </el-col>
+    </el-row>
   </div>
 </template>
 
@@ -36,7 +49,8 @@ export default {
       clientHeight: "100%",
       dormitoryNum: null,
       classInfo: [
-      ]
+      ],
+      count:1
     };
   },
   computed:{
@@ -49,10 +63,17 @@ export default {
     this.loadingClassInfo();
   },
   methods: {
-    loadingClassInfo(){
-      getClassInfo(this.$route.params.className)
+    handleSizeChange(val){
+      this.loadingClassInfo(val)
+    },
+    handleCurrentChange(val){
+      this.loadingClassInfo(val)
+    },
+    loadingClassInfo(page=1){
+      getClassInfo(this.$route.params.className,page)
               .then(data=>{
                 this.classInfo = data.object.classStuInfo;
+                this.count = data.object.count;
               })
     },
     setClient() {

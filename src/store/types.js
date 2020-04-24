@@ -5,7 +5,9 @@ const types ={
 
  TITLE : 'title',
 
- COUNT : "count"
+ COUNT : "count",
+
+ USER: "user"
 };
 
 export default types;

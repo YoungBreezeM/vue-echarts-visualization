@@ -1,0 +1,17 @@
+.updatePwd {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom right, blue, pink);
+    .report-form{
+        width: 100%;
+        margin: auto;
+        position: absolute;
+        top:2%;
+    }
+    .el-form{
+        width: 90%;
+    }
+    .el-form-item__label{
+        color: white;
+    }
+}

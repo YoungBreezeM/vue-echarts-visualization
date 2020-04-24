@@ -1,16 +1,7 @@
 let populationNum_China ={
     title:"统计我校师生每天各省人数情况",
     defaultSelected:[0],
-    selectedOption:[
-        {
-            label: "学生",
-            value: 0
-        },
-        {
-            label: "教师",
-            value: 1
-        }
-    ],
+    selectedOption:null,
     legend:{
         selected:{
             // "河南":true,

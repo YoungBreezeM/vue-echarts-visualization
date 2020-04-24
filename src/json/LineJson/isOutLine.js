@@ -2,15 +2,15 @@ let isOutLine ={
     title:"统计我校师生每天外出情况",
     selectedOption:[
         {
-            label: "学生",
-            value: 0
+            id:0,
+            label: '学生'
         },
         {
-            label: "教师",
-            value: 1
+            id: 1,
+            label: '老师',
         }
     ],
-    defaultSelected:[0],
+    defaultSelected:"学生",
     series: [
         {
             name: "非外出",

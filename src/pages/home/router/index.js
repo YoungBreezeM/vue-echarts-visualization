@@ -1,6 +1,6 @@
 
 import routerCenter from "../../../lib/routerCenter";
-import verifyLogin from "../../../lib/interceptor";
+import {verifyLogin} from "../../../lib/interceptor";
 let Index = () => import('../view/Index.vue');
 let IndexHome = () => import("../../../components/common/IndexHome/IndexHome");
 let Port = () => import('../components/port/Port.vue');

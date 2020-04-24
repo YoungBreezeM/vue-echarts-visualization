@@ -3,13 +3,17 @@
         <div class="index-menu">
             <i class="el-icon-arrow-right"></i>
             <span class="chart-title">{{renderData.title}}</span>
-            <el-cascader
-                    v-model="renderData.defaultSelected"
-                    :options="renderData.selectedOption"
-                    size="small"
-                    class="cascader-style"
-            >
-            </el-cascader>
+            <el-select v-model="renderData.defaultSelected"
+                       v-if="renderData.selectedOption"
+                       @change="changeRole"
+                       placeholder="请选择">
+                <el-option
+                        v-for="item in renderData.selectedOption"
+                        :key="item.id"
+                        :label="item.label"
+                        :value="item.label">
+                </el-option>
+            </el-select>
         </div>
         <div id="myLine" ref="myLine"></div>
     </div>
@@ -53,6 +57,9 @@
                 myChart.setOption(newRenderDate, true);
                 return myChart;
 
+            },
+            changeRole(val){
+                this.$emit("changeRole",val);
             },
             limitChange(myChart) {
                 myChart.on("legendselectchanged", (params) => {

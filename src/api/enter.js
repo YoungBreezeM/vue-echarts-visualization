@@ -13,10 +13,10 @@ export let enter = async()=> {
 };
 
 
-export let unEnterMan = async ()=>{
+export let unEnterMan = async (deptId)=>{
     let {data,object} = await Http({
         method: "get",
-        url: "unenter/detail/1",
+        url: "/unenterbyDep/detail/"+deptId+"/1",
     });
     return {
         data,

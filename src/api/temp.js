@@ -19,9 +19,10 @@ export let tempLine = async ()=>{
 };
 
 export let unusualTemp = async (time)=>{
+    console.log(time)
     let {data,object} = await Http({
         method:"get",
-        url:"/unusual/student/"+time,
+        url:"/unusual/学生/"+time,
     });
     return {data,object};
 };

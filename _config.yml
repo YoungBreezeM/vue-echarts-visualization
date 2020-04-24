@@ -47,6 +47,12 @@ pages: &pages
     filename: 'login.html'
     title: 'login page'
     chunks: ['chunk-vendors', 'chunk-common', 'login']
+  report:
+    entry: './src/pages/report/report.js'
+    template: 'public/report.html'
+    filename: 'report.html'
+    title: 'report page'
+    chunks: ['chunk-vendors', 'chunk-common', 'report']
 
 #项目基础配置
 config:

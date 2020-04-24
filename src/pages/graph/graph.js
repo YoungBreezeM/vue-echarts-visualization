@@ -16,9 +16,16 @@ import {
   Message,
   Row,
   Col,
+  Pagination,
+  Select,
+  Option,
+    Loading
 } from 'element-ui';
 
-
+Vue.use(Loading);
+Vue.use(Option);
+Vue.use(Select);
+Vue.use(Pagination);
 Vue.use(TableColumn);
 Vue.use(Table);
 Vue.use(Cascader);

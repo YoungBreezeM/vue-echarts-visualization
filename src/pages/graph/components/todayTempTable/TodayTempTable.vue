@@ -2,16 +2,17 @@
   <div class="today-temp-table">
     <div class="index-menu">
       <i class="el-icon-arrow-right"></i
-      ><span class="chart-title">统计今日{{ role }}温度情况：</span>
-      <el-cascader
-        v-model="checkedVal"
-        :options="allIndexs"
-        size="small"
-        class="cascader-style"
-      ></el-cascader>
+      ><span class="chart-title">统计今日学生报备温度情况：</span>
+<!--      <el-cascader-->
+<!--        v-model="checkedVal"-->
+<!--        :options="allIndexs"-->
+<!--        size="small"-->
+<!--        class="cascader-style"-->
+<!--      ></el-cascader>-->
     </div>
 <!--    <Loading v-if="!status"></Loading>-->
     <el-table
+
             :data="tempNum"
       border
       style="width: 100%"
@@ -22,9 +23,9 @@
     >
       <el-table-column prop="time" label="统计时间" show-overflow-tooltip>
       </el-table-column>
-      <el-table-column prop="unnormal" label="正常/人" width="80">
+      <el-table-column prop="normal" label="正常/人" width="80">
       </el-table-column>
-      <el-table-column prop="normal" label="异常/人" width="80">
+      <el-table-column prop="unnormal" label="异常/人" width="80">
       </el-table-column>
       <el-table-column prop="all" label="总人数" width="80"> </el-table-column>
     </el-table>
@@ -40,24 +41,25 @@ export default {
   components: {Loading},
   data() {
     return {
+      loading: true,
       tempNum: [
       ],
       status:false,
-      allIndexs: [
-        {
-          label: "学生",
-          value: 0
-        },
-        {
-          label: "教师",
-          value: 1
-        }
-      ],
-      checkedVal: [0]
+      // allIndexs: [
+      //   {
+      //     label: "学生",
+      //     value: 0
+      //   },
+      //   {
+      //     label: "教师",
+      //     value: 1
+      //   }
+      // ],
+      // checkedVal: [0]
     };
   },
   created() {
-    this.role = this.allIndexs[this.checkedVal[0]].label;
+
     //加载数据
     this.loadingTemp();
   },
@@ -65,7 +67,7 @@ export default {
     getInfo(row) {
       console.log(row)
       this.$router.push({
-        path: "/graph/tempTable/"+(new Date().getMonth()+1)+"-"+new Date().getDate()+"("+row.time+")"
+        path: "/graph/tempTable/"+(new Date().getMonth()+1)+"-"+new Date().getDate()
       });
       console.log(new Date().getMonth())
     },

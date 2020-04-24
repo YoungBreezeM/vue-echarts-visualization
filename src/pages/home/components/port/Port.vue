@@ -1,34 +1,53 @@
 <template>
     <div class="port">
-        <el-row >
-            <el-button type="danger" icon="el-icon-delete" class="btn-port">批量删除</el-button>
+        <el-row>
+            <el-col :span="5">
+                <el-select v-model="defaultSelected" placeholder="请选择">
+                    <el-option
+                            v-for="item in options"
+                            :key="item.value"
+                            :label="item.role"
+                            :value="item.value">
+                    </el-option>
+                </el-select>
+            </el-col>
+            <el-col :span="24">
+                <el-upload class="uploadfile" action="" :http-request='uploadFileMethod' :show-file-list="true" multiple>
+                    <el-button class="custom-btn" type="success">上传</el-button>
+                </el-upload>
+            </el-col>
         </el-row>
         <el-row>
-            <el-upload action="http://localhost:8080/fileupload" class="btn-port" method="post" enctype="multipart/form-data">
-                <el-button type="primary" icon="el-icon-upload">点击上传</el-button>
-            </el-upload>
+            <el-table :data="files" style="width: 100%;" border>
+                <el-table-column type="selection" width="55"></el-table-column>
+                <el-table-column label="ID" width="120">
+                    <template slot-scope="scope">{{ scope.$index+1 }}</template>
+                </el-table-column>
+                <el-table-column prop="desc" label="描述" show-overflow-tooltip></el-table-column>
+                <el-table-column prop="number" label="文件名" show-overflow-tooltip></el-table-column>
+                <el-table-column prop="logTime" label="日期" show-overflow-tooltip>
+                </el-table-column>
+                <el-table-column label="操作" width="120">
+                    <i
+                            class="el-icon-download down"
+                            style="cursor: pointer;"
+                    ></i>
+                </el-table-column>
+            </el-table>
         </el-row>
-<!--        <el-row>-->
-<!--            <el-table :data="files" style="width: 100%;" border>-->
-<!--                <el-table-column type="selection" width="55"></el-table-column>-->
-<!--                <el-table-column label="ID" width="120">-->
-<!--                    <template slot-scope="scope">{{ scope.$index+1 }}</template>-->
-<!--                </el-table-column>-->
-<!--                <el-table-column prop="cycle" label="文件季度" width="120"></el-table-column>-->
-<!--                <el-table-column prop="describe" label="描述" show-overflow-tooltip></el-table-column>-->
-<!--                <el-table-column prop="user" label="执行人" show-overflow-tooltip></el-table-column>-->
-<!--                <el-table-column label="日期" show-overflow-tooltip>-->
-<!--                </el-table-column>-->
-<!--                <el-table-column label="操作" width="120">-->
-<!--                    <template slot-scope="scope">-->
-<!--                        <i-->
-<!--                                class="el-icon-delete icon-control"-->
-<!--                                @click="delOperation(scope.$index,scope.row.name)"-->
-<!--                        ></i>-->
-<!--                    </template>-->
-<!--                </el-table-column>-->
-<!--            </el-table>-->
-<!--        </el-row>-->
+        <el-row style="margin: 40px 0">
+            <el-col :offset="8">
+                <el-pagination
+                        @size-change="handleSizeChange"
+                        @current-change="handleCurrentChange"
+                        :current-page="1"
+                        :page-sizes="[10]"
+                        :page-size="10"
+                        layout="total, sizes, prev, pager, next, jumper"
+                        :total="10">
+                </el-pagination>
+            </el-col>
+        </el-row>
         <footer style="text-align: center;font-size: 14px;">
             <div>
                 <p class="thanks-info">
@@ -41,44 +60,81 @@
 </template>
 <script>
     import "./port.scss";
+    import {getAllRecordFile} from "../../../../api/port";
+    import {fileUpload} from "../../../../api/uploadFile";
 
     export default {
         name: "port",
         data() {
             return {
-                files: [
+                defaultSelected:1,
+                options:[
                     {
-                        cycle: "1703",
-                        describe: "17年3月份河南省电网数据",
-                        time: Date.now(),
-                        user: "zs"
+                        value:0,
+                        role:"老师信息"
                     },
                     {
-                        cycle: "1803",
-                        describe: "18年3月份河南省电网数据",
-                        time: Date.now(),
-                        user: "admin"
+                        value: 1,
+                        role:"学生信息"
                     }
                 ],
-                currentPage1: 5,
-                currentPage2: 5,
-                currentPage3: 5,
-                currentPage4: 4,
+                files: [
+                    // {
+                    //     name: "17年3月份河南省电网数据",
+                    //     time: new Date(),
+                    //
+                    // },
+                    // {
+                    //     name: "18年3月份河南省电网数据",
+                    //     time: new Date(),
+                    //
+                    // }
+                ],
+
                 delDialog: false,
                 operationIndex: 0,
                 operationName: ""
             };
         },
+        mounted(){
+            this.loadingFiles();
+        },
         methods: {
+            uploadFileMethod(param) {
+                let fileObject = param.file;
+
+                fileUpload(fileObject,this.defaultSelected)
+                    .then(data=>{
+                        if(data){
+                            this.loadingFiles();
+                            alert("上传成功");
+                        }
+                    }).catch(err=>{
+                        console.log(err)
+                })
+
+            },
+            loadingFiles(){
+              getAllRecordFile()
+                  .then(data=>{
+                      this.files = data.object
+                  })
+            },
             delOperation(index, name) {
                 this.operationIndex = index;
                 this.operationName = name;
                 this.delDialog = true;
             },
             delTable() {
-                this.files.splice(this.operationIndex, 1);
-                this.delDialog = false;
-            }
+
+
+            },
+            handleSizeChange(val) {
+
+            },
+            handleCurrentChange(val) {
+
+            },
         }
     };
 </script>

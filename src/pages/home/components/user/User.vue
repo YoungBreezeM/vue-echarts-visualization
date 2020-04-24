@@ -47,7 +47,7 @@
                         :page-sizes="[10]"
                         :page-size="10"
                         layout="total, sizes, prev, pager, next, jumper"
-                        :total="1609">
+                        :total="currentPage.total">
                 </el-pagination>
             </el-col>
         </el-row>
@@ -68,13 +68,15 @@
                 <el-col hidden>
                     <el-input v-model="updateContent.id" :disabled="true"></el-input>
                 </el-col>
-                <p>学号：</p>
-                <el-input v-model="updateContent.num" :disabled="true"></el-input>
+                <el-col>
+                    <p>学号：</p>
+                    <el-input v-model="updateContent.num"></el-input>
+                </el-col>
             </el-row>
             <el-row class="up-info">
                 <el-col>
                     <p>用户名：</p>
-                    <el-input v-model="updateContent.username" :disabled="true"></el-input>
+                    <el-input v-model="updateContent.userName"></el-input>
                 </el-col>
             </el-row>
             <el-row class="up-info">
@@ -86,13 +88,13 @@
             <el-row class="up-info">
                 <el-col >
                     <p>工作单位：</p>
-                    <el-input v-model="updateContent.employer" :disabled="true"></el-input>
+                    <el-input v-model="updateContent.employer" ></el-input>
                 </el-col>
             </el-row>
             <el-row class="up-info">
                 <el-col >
                     <p>联系方式：</p>
-                    <el-input v-model="updateContent.phone" :disabled="true"></el-input>
+                    <el-input v-model="updateContent.phone" ></el-input>
                 </el-col>
             </el-row>
             <el-row class="up-info">
@@ -166,7 +168,7 @@
                     })
             },
             updateUserInfo(){
-              updateUser(this.updateContent.num,this.updateContent.password)
+              updateUser(this.updateContent)
                   .then(data=>{
                       this.$notify({
                           title: "成功",
@@ -225,6 +227,7 @@
                 let {id} = rowNode.row;
                 console.log(id);
                 getUser(id).then(data=>{
+                    console.log(data)
                    this.updateContent = data.object;
                 })
             }

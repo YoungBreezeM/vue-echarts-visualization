@@ -27,14 +27,25 @@
             </el-table-column>
             <el-table-column prop="address" label="住址" show-overflow-tooltip>
             </el-table-column>
-            <el-table-column prop="className" label="班级" show-overflow-tooltip>
-            </el-table-column>
             <el-table-column prop="dormitoryNum" label="宿舍号" show-overflow-tooltip>
             </el-table-column>
-            <el-table-column prop="outDoor" label="是否外出" show-overflow-tooltip></el-table-column>
+
             <el-table-column prop="tel" label="本人电话" show-overflow-tooltip>
             </el-table-column>
         </el-table>
+        <el-row style="margin: 40px 0 0 0 ">
+            <el-col :offset="8">
+                <el-pagination
+                        @size-change="handleSizeChange"
+                        @current-change="handleCurrentChange"
+                        :current-page="1"
+                        :page-sizes="[10]"
+                        :page-size="10"
+                        layout="total, sizes, prev, pager, next, jumper"
+                        :total="0">
+                </el-pagination>
+            </el-col>
+        </el-row>
     </div>
 </template>
 
@@ -76,10 +87,16 @@
             this.loadingUnTemp()
         },
         methods: {
+            handleSizeChange(){
+
+            },
+            handleCurrentChange(){
+
+            },
             loadingUnTemp(){
-                unusualTemp((new Date().getMonth()+1)+"-"+(new Date().getDate()-1))
+                unusualTemp(this.$route.params.date)
                     .then(data=>{
-                        console.log(data)
+                        console.log(data);
                         this.studentTable =data.object;
                     })
             },
@@ -90,23 +107,15 @@
                 this.clientHeight = clientHeight - 125 + "px";
             },
             getStudentInfo(row, column) {
-                if (column.property == "id") {
-                    // this.$router.push({
-                    //   path: "/whole/studentTempLine/" + row.name + "/" + this.role
-                    // });
-                } else if (column.property == "dormitoryNum") {
+                if (column.property === "dormitoryNum") {
                     this.$router.push({
                         path: "/graph/dormitoryInfo/" + row[column.property]
-                    });
-                } else if (column.property == "className") {
-                    this.$router.push({
-                        path: "/graph/classInfo/" + row[column.property]
                     });
                 }
             },
             // eslint-disable-next-line no-unused-vars
-            addClass({row, column, rowIndex, columnIndex}) {
-                if (columnIndex === 8 || columnIndex === 7) {
+            addClass({columnIndex}) {
+                if (columnIndex === 7) {
                     return 'click_enter'
                 }
             }

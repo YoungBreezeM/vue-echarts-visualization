@@ -1,15 +1,6 @@
 let isNormalLine ={
-    title:"统计我校师生每天体温情况",
-    selectedOption:[
-        {
-            label: "学生",
-            value: 0
-        },
-        {
-            label: "教师",
-            value: 1
-        }
-    ],
+    title:"统计我校学生每天体温情况",
+    selectedOption:null,
     defaultSelected:[0],
     series: [
         {

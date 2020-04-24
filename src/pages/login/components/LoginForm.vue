@@ -27,18 +27,18 @@
 <script>
     import types from "../../../store/types.js";
     import store from "../../../store/store.js";
-    import userList from "../../../json/user/userList";
     import LoginApi from "../../../api/loginApi";
 
 
     export default {
         data() {
             return {
-                userName: "171530301",
+                userName: "1001",
                 password: "123456",
                 msg:{
                   110:"用户、密码错误",
-                  1001:"登录过期请重新登录"
+                  1001:"登录过期请重新登录",
+                  512:"您暂无权限登录"
                 }
             };
         },
@@ -64,7 +64,8 @@
                     .then(data => {
                         if(data.data.token){
                           store.commit(types.LOGIN, data.data.token);
-                          alert("登录成功")
+                          store.commit(types.USER,data.object.role);
+                          alert("登录成功");
                           window.location.href = "/"
                         }
 

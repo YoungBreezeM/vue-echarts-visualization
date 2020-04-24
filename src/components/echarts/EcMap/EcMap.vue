@@ -9,8 +9,6 @@
 </template>
 
 <script>
-    import mapPeople from "../../../api/mapPeople";
-
     let mapStack =[];
     import "../../../../public/static/css/gol.scss"
     import echarts from "../../../lib/InitEcharts";

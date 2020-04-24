@@ -16,6 +16,8 @@
                     <!-- 全校师生分布地图模块 -->
                     <EcLine :render-data="renderCenter.isOutLine.data"
                             v-if="renderCenter.isOutLine.status"
+                            v-on:lineClick = "lineClick"
+                            v-on:changeRole ="changeRole"
                     ></EcLine>
                     <Loading v-if="!renderCenter.isOutLine.status"></Loading>
                     <span class="top-left border-span"></span>
@@ -96,7 +98,9 @@
                     <EcLine :render-data="renderCenter.populationNum.data"
                             v-if="openView.populationNum"></EcLine>
                     <EcLine :render-data="renderCenter.isOutLine.data"
-                            v-if="openView.isOutLine"></EcLine>
+                            v-if="openView.isOutLine"
+                            v-on:lineClick="lineClick"
+                    ></EcLine>
                     <EcPie :render-data="renderCenter.isInput.data"
                            v-if="openView.isInput"
                            v-on:pieSwitch="pieSwitch"
@@ -116,18 +120,13 @@
     //数据源
     import isOutLine from "../../../json/LineJson/isOutLine";
     import isNormalLine from "../../../json/LineJson/isNormalLine";
-    import dataByChina from "../../../json/map/dataByChina";
-    import populationNum_PDS from "../../../json/LineJson/populationNum_PDS";
     import populationNum_China from "../../../json/LineJson/populationNum_China";
-    import populationNum_HeNan from "../../../json/LineJson/populationNum_HeNan";
-    import grading from "../../../json/PieJson/grading";
     import mapPeople from "../../../api/mapPeople";
     import Loading from "../../../components/loading/loading";
     import {isStand, removeSpace, resolvePopulationData} from "../../../utils/isStand";
     import {isOut} from "../../../api/isOut";
     import {temp, tempLine} from "../../../api/temp";
     import {enter} from "../../../api/enter";
-    import isInput from "../../../json/PieJson/isInput";
     import {populationNum} from "../../../api/populationNum";
     //组件
     let EcMap =()=> import("../../../components/echarts/EcMap/EcMap");
@@ -147,7 +146,8 @@
                 },
                 renderCenter:{
                     isOutLine:{//是否外出
-                        status:false,
+                        status:true,
+                        role:"学生",
                         data:null
                     },
                     isNormalLine:{
@@ -212,9 +212,10 @@
 
                 })
             },
-            loadingOutLine(){
+            loadingOutLine(role="学生"){
                 let outLine = this.renderCenter.isOutLine;
-                isOut()
+                outLine.status = !outLine.status;
+                isOut(role)
                     .then(data=>{
                         isOutLine.series[0].data = data.object.inside;
                         isOutLine.series[1].data = data.object.outside;
@@ -237,7 +238,7 @@
                 let enterData = this.renderCenter.isInput;
                 enter().then(data=>{
 
-                    console.log(data.object)
+                    // console.log(data.object)
                     enterData.data = data.object;
                     enterData.status =!enterData.status;
                 })
@@ -258,6 +259,10 @@
                         console.log(populationNum_China);
                         populationLine.status = !populationLine.status;
                     })
+            },
+            changeRole(role){
+                this.renderCenter.isOutLine.role = role;
+                this.loadingOutLine(role);
             },
             switchView(view) {//切换图形视图
                this.isHidden = !this.isHidden;
@@ -281,7 +286,7 @@
 
             },
             mapBack({aid}){
-                console.log(aid)
+
                 this.loadingPopulation(aid)//切换折线图
             },
             pieSwitch(msg){
@@ -301,7 +306,9 @@
                 //获取折线图点击参数
                 let path = {
                     "正常":"/graph/tempTable/"+parmas.name,
-                    "不正常":"/graph/tempTable/"+parmas.name
+                    "不正常":"/graph/tempTable/"+parmas.name,
+                    "外出":"/graph/outsideTable/"+this.renderCenter.isOutLine.role+"/"+parmas.name,
+                    "非外出":"/graph/outsideTable/"+this.renderCenter.isOutLine.role+"/"+parmas.name
                 };
                 if(path[parmas.seriesName]){
                     this.$router.push({path:path[parmas.seriesName]})

@@ -16,7 +16,6 @@
         >
             <el-table-column prop="id" label="学号" width="150"></el-table-column>
             <el-table-column prop="name" label="姓名" width="150"></el-table-column>
-            </el-table-column>
             <el-table-column prop="te" label="联系方式" show-overflow-tooltip>
             </el-table-column>
         </el-table>

@@ -30,10 +30,11 @@ export let getUserByNum = async (num)=>{
     return {data,object}
 };
 
-export let updateUser = async (num,password)=>{
+export let updateUser = async (body)=>{
     let {data,object} = await Http({
         method:"put",
-        url:"/updateps/"+num+"/"+password,
+        url:"/updateUser",
+        data:body
     });
 
     return {data,object}

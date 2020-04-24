@@ -3,12 +3,12 @@
         <div class="index-menu">
             <i class="el-icon-arrow-right"></i
             ><span class="chart-title">统计{{title}}录入情况：</span>
-            <el-cascader
-                    v-model="checkedVal"
-                    :options="allIndexs"
-                    size="small"
-                    class="cascader-style"
-            ></el-cascader>
+<!--            <el-cascader-->
+<!--                    v-model="checkedVal"-->
+<!--                    :options="allIndexs"-->
+<!--                    size="small"-->
+<!--                    class="cascader-style"-->
+<!--            ></el-cascader>-->
         </div>
         <span class="el-icon-back toBack" @click="callBack" title="返回上级" >
         </span>
@@ -26,17 +26,17 @@
     export default {
         data(){
           return{
-              title:"师生",
-              allIndexs: [
-                  {
-                      label: "学生",
-                      value: 0
-                  },
-                  {
-                      label: "教师",
-                      value: 1
-                  }
-              ],
+              title:"学生",
+              // allIndexs: [
+              //     {
+              //         label: "学生",
+              //         value: 0
+              //     },
+              //     {
+              //         label: "教师",
+              //         value: 1
+              //     }
+              // ],
               dataSchool: "",
               checkedVal: [0]
           }
